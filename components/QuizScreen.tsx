@@ -174,8 +174,7 @@ const QuizScreen: React.FC<QuizScreenProps> = ({ questions, onFinish }) => {
                   const dotIndex = raw.indexOf('.');
                   if (dotIndex !== -1) display = raw.substring(dotIndex + 1).trim();
                   if (!display) display = raw.trim();
-                  if (!display) console.warn('Empty option text for question', currentQuestion.id, 'option index', idx, raw);
-                  return <span className="font-medium">{display}</span>;
+                  return <span className="font-medium">{display || 'N/A'}</span>;
                 })()}
               </button>
             );

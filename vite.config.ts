@@ -18,21 +18,24 @@ export default defineConfig(({ mode }) => {
         alias: {
           '@': path.resolve(__dirname, '.'),
         }
-      }
-      ,
+      },
       build: {
         chunkSizeWarningLimit: 700,
         rollupOptions: {
           output: {
             manualChunks(id) {
               if (id.includes('node_modules')) {
-                if (id.includes('react')) return 'vendor_react';
+                if (id.includes('react') || id.includes('react-dom')) return 'vendor_react';
                 if (id.includes('lucide-react')) return 'vendor_icons';
                 if (id.includes('recharts')) return 'vendor_charts';
                 return 'vendor_misc';
               }
             }
           }
+        },
+        commonjsOptions: {
+          include: [/node_modules/],
+          transformMixedEsModules: true
         }
       }
     };
