@@ -1,6 +1,6 @@
 # Qtusdev
 # Lawmaster — Pháp Luật Đại Cương
-Live: https://lawmaster-phap-luat-dai-cuong.vercel.app/
+# Live: https://lawmaster-phap-luat-dai-cuong.vercel.app/
 
 <img src="https://files.catbox.moe/r4zyez.png" alt="QTusdev">
 
@@ -50,3 +50,4 @@ Hoặc đơn giản mở index.html bằng trình duyệt để dùng bản tĩn
 <li>Website: qtusdev.website
 <li>Bản quyền
 © 2025 Lawmaster — Qtusdev. Bảo lưu mọi quyền.
+
