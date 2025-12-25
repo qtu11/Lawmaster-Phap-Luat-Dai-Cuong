@@ -28,14 +28,16 @@
 # Cài đặt & chạy nhanh
 Clone repository:
 
+```bash
 git clone https://github.com/qtu11/Lawmaster-Phap-Luat-Dai-Cuong.git
 cd Lawmaster-Phap-Luat-Dai-Cuong
+```
 
 Mở dự án bằng VS Code và chạy Live Server hoặc dùng Vite:
-
+```bash
 npm install
 npm run dev
-
+```
 Hoặc đơn giản mở index.html bằng trình duyệt để dùng bản tĩnh.
 
 # Cấu trúc dự án (chính)
@@ -50,4 +52,3 @@ Hoặc đơn giản mở index.html bằng trình duyệt để dùng bản tĩn
 <li>Website: qtusdev.website
 <li>Bản quyền
 © 2025 Lawmaster — Qtusdev. Bảo lưu mọi quyền.
-
