@@ -8,6 +8,31 @@ const AZURE_REGION = 'southeastasia'; // Ví dụ: 'southeastasia' hoặc 'eastu
  */
 let currentAudio: HTMLAudioElement | null = null;
 
+/**
+ * Xử lý và làm sạch text để phát âm tự nhiên hơn
+ */
+const normalizeTextForSpeech = (text: string): string => {
+  let normalized = text;
+  
+  // Loại bỏ các ký tự đặc biệt không cần thiết
+  normalized = normalized.replace(/[\(\)\[\]]/g, ' ');
+  
+  // Chuẩn hóa dấu chấm câu
+  normalized = normalized.replace(/\.{2,}/g, '.');
+  
+  // Thêm khoảng trắng sau dấu câu nếu thiếu
+  normalized = normalized.replace(/([.,!?])([^\s])/g, '$1 $2');
+  
+  // Loại bỏ khoảng trắng thừa
+  normalized = normalized.replace(/\s+/g, ' ').trim();
+  
+  // Xử lý các từ viết tắt phổ biến trong pháp luật
+  normalized = normalized.replace(/\bPL\b/gi, 'pháp luật');
+  normalized = normalized.replace(/\bNN\b/gi, 'nhà nước');
+  
+  return normalized;
+};
+
 export const stopSpeaking = () => {
   try {
     if (currentAudio) {
@@ -32,10 +57,24 @@ export const speakText = async (text: string): Promise<void> => {
   try {
     const endpoint = `https://${AZURE_REGION}.tts.speech.microsoft.com/cognitiveservices/v1`;
     
+    // Normalize text trước khi tạo SSML
+    const normalizedText = normalizeTextForSpeech(text);
+    
+    // Escape XML special characters
+    const escapedText = normalizedText
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&apos;');
+    
+    // Sử dụng giọng nói tự nhiên hơn với prosody (nhịp điệu) và break (ngắt nghỉ)
     const ssml = `
       <speak version='1.0' xml:lang='vi-VN'>
         <voice xml:lang='vi-VN' xml:gender='Female' name='vi-VN-HoaiMyNeural'>
-          ${text}
+          <prosody rate="0.95" pitch="+0Hz">
+            ${escapedText}
+          </prosody>
         </voice>
       </speak>`;
 
@@ -83,15 +122,45 @@ const speakBrowserFallback = (text: string) => {
     // Also stop any existing audio
     try { if (currentAudio) { currentAudio.pause(); currentAudio = null; } } catch(e) {}
 
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = 'vi-VN';
-    utterance.rate = 1.0; // Tốc độ bình thường
+    // Normalize text trước khi đọc
+    const normalizedText = normalizeTextForSpeech(text);
 
-    // Cố gắng tìm giọng tiếng Việt Google hoặc Microsoft trong máy
-    const voices = window.speechSynthesis.getVoices();
-    const vnVoice = voices.find(v => v.lang.includes('vi') || v.name.includes('Vietnamese'));
-    if (vnVoice) {
-      utterance.voice = vnVoice;
+    const utterance = new SpeechSynthesisUtterance(normalizedText);
+    utterance.lang = 'vi-VN';
+    utterance.rate = 0.9; // Tốc độ hơi chậm để rõ ràng hơn
+    utterance.pitch = 1.0; // Độ cao giọng bình thường
+    utterance.volume = 1.0; // Âm lượng tối đa
+
+    // Đợi voices load (nếu chưa có)
+    const setVoice = () => {
+      const voices = window.speechSynthesis.getVoices();
+      // Ưu tiên giọng Google Vietnamese hoặc Microsoft Vietnamese
+      let vnVoice = voices.find(v => 
+        v.name.includes('Vietnamese') || 
+        v.name.includes('vi-VN') ||
+        (v.lang.includes('vi') && v.name.includes('Google'))
+      );
+      
+      // Nếu không tìm thấy, tìm bất kỳ giọng tiếng Việt nào
+      if (!vnVoice) {
+        vnVoice = voices.find(v => v.lang.includes('vi'));
+      }
+      
+      if (vnVoice) {
+        utterance.voice = vnVoice;
+      }
+    };
+
+    // Thử set voice ngay lập tức
+    setVoice();
+    
+    // Nếu chưa có voices, đợi voiceschanged event
+    if (window.speechSynthesis.getVoices().length === 0) {
+      const voicesChanged = () => {
+        setVoice();
+        window.speechSynthesis.onvoiceschanged = null;
+      };
+      window.speechSynthesis.onvoiceschanged = voicesChanged;
     }
 
     window.speechSynthesis.speak(utterance);
