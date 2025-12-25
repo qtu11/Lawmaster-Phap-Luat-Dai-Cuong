@@ -9,7 +9,11 @@ export default defineConfig(({ mode }) => {
         port: 3000,
         host: '0.0.0.0',
       },
-      plugins: [react()],
+      plugins: [
+        react({
+          jsxRuntime: 'automatic',
+        })
+      ],
       define: {
         'process.env.API_KEY': JSON.stringify(env.GEMINI_API_KEY),
         'process.env.GEMINI_API_KEY': JSON.stringify(env.GEMINI_API_KEY)
@@ -25,7 +29,9 @@ export default defineConfig(({ mode }) => {
           output: {
             manualChunks(id) {
               if (id.includes('node_modules')) {
-                if (id.includes('react') || id.includes('react-dom')) return 'vendor_react';
+                // Tách react và react-dom riêng để tránh conflict
+                if (id.includes('react-dom')) return 'vendor_react-dom';
+                if (id.includes('react/') || id.includes('react\\')) return 'vendor_react';
                 if (id.includes('lucide-react')) return 'vendor_icons';
                 if (id.includes('recharts')) return 'vendor_charts';
                 return 'vendor_misc';
