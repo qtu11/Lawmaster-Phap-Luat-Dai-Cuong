@@ -1,90 +1,52 @@
 # Qtusdev
-# Lawmaster - Pháp luật đại cương
-# Link: https://lawmaster-phap-luat-dai-cuong.vercel.app/
-![QTusdev](https://files.catbox.moe/r4zyez.png) 
+# Lawmaster — Pháp Luật Đại Cương
+Live: https://lawmaster-phap-luat-dai-cuong.vercel.app/
 
+<img src="https://files.catbox.moe/r4zyez.png" alt="QTusdev">
 
-<h1>⚖️ Lawmaster - Pháp Luật Đại Cương</h1>
+⚖️ Lawmaster là ứng dụng học tập trực tuyến thiết kế để giúp sinh viên ôn luyện và làm chủ ngân hàng 300 câu hỏi trắc nghiệm môn "Pháp luật đại cương". Ứng dụng tối ưu cho trải nghiệm ôn tập nhanh, thi thử và tự học với phản hồi lời giải ngay sau mỗi câu.
 
-Lawmaster là một nền tảng học tập trực tuyến hiện đại, được thiết kế chuyên biệt để giúp sinh viên ôn tập và làm chủ ngân hàng 300 câu hỏi trắc nghiệm môn Pháp luật đại cương. Dự án tập trung vào trải nghiệm người dùng, tính tương tác cao và hệ thống giải thích chi tiết.
+# Tính năng chính
+<li><b>Đăng nhập & Cá nhân hóa:</b> Người dùng nhập tên để bắt đầu, lưu kết quả và theo dõi tiến độ.
+<li><b>Leaderboard:</b> Bảng xếp hạng tính theo độ chính xác và thời gian hoàn thành, hiển thị Top 10 người chơi.
+<li><b>Phản hồi tức thì:</b> Hiển thị đáp án đúng cùng giải thích pháp lý, kèm trích dẫn điều luật khi có.
+<li><b>Ngân hàng 300 câu:</b> Bao quát các chủ đề cốt lõi (nguồn gốc Nhà nước, hệ thống pháp luật, Luật Dân sự, Hình sự, Phòng chống tham nhũng...).
+<li><b>Xáo trộn thông minh:</b> Trộn ngẫu nhiên thứ tự câu và đáp án nhằm tăng hiệu quả ôn luyện.
+<li><b>Lọc câu sai:</b> Lưu và tập hợp các câu làm sai để ôn tập riêng.
+<li><b>Chế độ học:</b> "Thi thử" có đếm ngược và tính điểm; "Tự học" không giới hạn thời gian.
 
-🌐 Website: qtusdev.website
+# Giao diện & trải nghiệm
+<li>Thiết kế chuyên nghiệp theo tông màu Navy & Gold, áp dụng phong cách Glassmorphism.
+<li>Responsive: Tương thích smartphone, tablet và desktop.
+<li>Thanh tiến độ minh họa mức hoàn thành bộ câu hỏi.
 
-👨‍💻 Phát triển bởi: qtusdev
-
-✨ Tính năng nổi bật
-
-# 1. Hệ thống định danh & Xếp hạng
-
-Đăng nhập sinh viên: Yêu cầu nhập tên để bắt đầu, tạo cảm giác cá nhân hóa.
-
-Leaderboard (Bảng xếp hạng): Hệ thống tính điểm dựa trên độ chính xác và thời gian hoàn thành, vinh danh Top 10 sinh viên xuất sắc nhất.
-
-# 2. Trải nghiệm học tập thông minh
-
-Giải thích chi tiết (Instant Feedback): Sau mỗi câu trả lời, hệ thống cung cấp giải thích pháp lý ngay lập tức, trích dẫn các điều luật cụ thể.
-
-Ngân hàng 300 câu hỏi: Bao quát toàn bộ chương trình (Nguồn gốc Nhà nước, Hệ thống pháp luật, Luật Dân sự, Hình sự, Phòng chống tham nhũng...).
-
-Xáo trộn câu hỏi: Ngẫu nhiên hóa thứ tự câu hỏi và đáp án để tránh tình trạng học vẹt.
-
-# 3. Giao diện & UX hiện đại
-
-Thiết kế chuyên nghiệp: Sử dụng tông màu Navy & Gold truyền thống của ngành luật nhưng được hiện đại hóa với phong cách Glassmorphism.
-
-Responsive Design: Hoạt động mượt mà trên mọi thiết bị: Smartphone, Tablet và Desktop.
-
-Chế độ học tập đa dạng: Lựa chọn giữa "Thi thử" (có đếm ngược) hoặc "Tự học" (không áp lực thời gian).
-
-# 4. Tính năng nâng cao
-
-Lọc câu hỏi sai: Hệ thống lưu lại các câu làm sai để sinh viên có thể ôn tập lại riêng biệt.
-
-Tiến độ học tập: Thanh Progress Bar hiển thị trực quan mức độ hoàn thành ngân hàng câu hỏi.
-
-🛠 Công nghệ sử dụng
-
-Frontend: HTML5, Tailwind CSS (Styling), JavaScript (ES6+).
-
-Database/Storage: LocalStorage (phiên bản offline) hoặc Firebase (cho bảng xếp hạng online).
-
-Iconography: Lucide Icons & FontAwesome.
-
-Fonts: Inter & Montserrat.
-
-# 🚀 Hướng dẫn cài đặt
-
-Để chạy dự án này trên môi trường cục bộ, làm theo các bước sau:
-
+# Công nghệ
+<li><b>Frontend:</b> TypeScript + React (Vite), Tailwind CSS
+<li><b>Lưu trữ:</b> LocalStorage (offline) — tùy chọn tích hợp <li><b>Firebase cho bảng xếp hạng online
+<li><b>Icon:</b> Lucide Icons, FontAwesome
+<li><b>Fonts</b>: Inter, Montserrat
+# Cài đặt & chạy nhanh
 Clone repository:
 
-git clone [https://github.com/qtu11/Lawmaster-Phap-Luat-Dai-Cuong.git](https://github.com/qtu11/Lawmaster-Phap-Luat-Dai-Cuong.git)
-
-
-Truy cập thư mục:
-
+git clone https://github.com/qtu11/Lawmaster-Phap-Luat-Dai-Cuong.git
 cd Lawmaster-Phap-Luat-Dai-Cuong
 
+Mở dự án bằng VS Code và chạy Live Server hoặc dùng Vite:
 
-Mở file index.html trên trình duyệt của bạn hoặc sử dụng Live Server trong VS Code.
+npm install
+npm run dev
 
-📂 Cấu trúc dự án
+Hoặc đơn giản mở index.html bằng trình duyệt để dùng bản tĩnh.
 
-├── index.html          # Trang chủ và giao diện chính
-├── components/
-│   ├── FlashcardScreen.tsx/           
-│   ├── QuizScreen.tsx/             # Logic xử lý câu hỏi, tính điểm
-│   └── data/           # File JSON chứa 300 câu hỏi & giải thích
-├── img/                # Hình ảnh và Icons
-└── README.md           # Tài liệu hướng dẫn
+# Cấu trúc dự án (chính)
+<li>index.html — điểm vào ứng dụng
+<li>components — các component React chính (FlashcardScreen, QuizScreen, ResultScreen, WelcomeScreen, Header)
+<li>services — loader câu hỏi, lưu trạng thái, TTS, theme
+<li>300 câu.txt — nguồn câu hỏi gốc (dùng cho chuyển đổi sang JSON).
 
-
-# 📝 Thông tin tác giả
-
-Dự án được thực hiện bởi qtusdev. Chúng tôi luôn mong muốn mang lại những giải pháp công nghệ đơn giản nhưng hiệu quả cho cộng đồng sinh viên.
-
-Email: contact@qtusdev.website
-
-GitHub: qtu11
-
-© 2025 Lawmaster by qtusdev. Bảo lưu mọi quyền.
+# Tác giả & Liên hệ
+<li>Tác giả: qtusdev (GitHub: qtu11)
+<li>Email: contact@qtusdev.website
+<li>Website: qtusdev.website
+<li>Bản quyền
+© 2025 Lawmaster — Qtusdev. Bảo lưu mọi quyền.
