@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Question } from '../types';
 import { Clock, ArrowRight, Volume2, HelpCircle } from 'lucide-react';
 import { QUIZ_DURATION_SECONDS } from '../constants';
-import { speak, stopSpeaking } from '../services/ttsService';
+import { speakText, stopSpeaking } from '../services/ttsService';
 
 interface QuizScreenProps {
   questions: Question[];
@@ -33,19 +33,6 @@ const QuizScreen: React.FC<QuizScreenProps> = ({ questions, onFinish }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Auto-read current question when index changes
-  useEffect(() => {
-    if (!currentQuestion) return;
-    const text = `Câu hỏi: ${currentQuestion.question}. Các phương án là: ${currentQuestion.options.map(o => o.replace(/^[A-D]\.|^[A-D]\.\s*/,'').trim()).join('. ')}`;
-    // speak (this will cancel any previous speech)
-    speak(text).catch(() => {});
-    // stop on unmount or when question changes
-    return () => {
-      stopSpeaking();
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentIdx, currentQuestion]);
-
   const finishQuiz = () => {
     let score = 0;
     questions.forEach((q, idx) => {
@@ -65,7 +52,6 @@ const QuizScreen: React.FC<QuizScreenProps> = ({ questions, onFinish }) => {
   const handleNext = () => {
     // Stop speaking when moving to next question
     stopSpeaking();
-    
     if (currentIdx < questions.length - 1) {
       setCurrentIdx(currentIdx + 1);
       setShowExplanation(false);
@@ -75,9 +61,20 @@ const QuizScreen: React.FC<QuizScreenProps> = ({ questions, onFinish }) => {
   };
 
   const handleSpeak = () => {
-    const text = `Câu hỏi: ${currentQuestion.question}. Các phương án là: ${currentQuestion.options.map(o => o.replace(/^[A-D]\.|^[A-D]\.\s*/,'').trim()).join('. ')}`;
-    speak(text).catch(() => {});
+    const text = `Câu hỏi: ${currentQuestion.question}. Các phương án là: ${currentQuestion.options.map(o => o.replace(/^[A-D]\.\s*/, '')).join('. ')}`;
+    stopSpeaking();
+    speakText(text);
   };
+
+  // Auto-speak when question changes
+  useEffect(() => {
+    if (!currentQuestion) return;
+    const t = setTimeout(() => {
+      handleSpeak();
+    }, 200);
+    return () => clearTimeout(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentIdx]);
 
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
@@ -159,7 +156,15 @@ const QuizScreen: React.FC<QuizScreenProps> = ({ questions, onFinish }) => {
                 `}>
                   {String.fromCharCode(65 + idx)}
                 </div>
-                <span className="font-medium">{option.substring(option.indexOf('.') + 1).trim()}</span>
+                {(() => {
+                  const raw = option || '';
+                  let display = '';
+                  const dotIndex = raw.indexOf('.');
+                  if (dotIndex !== -1) display = raw.substring(dotIndex + 1).trim();
+                  if (!display) display = raw.trim();
+                  if (!display) console.warn('Empty option text for question', currentQuestion.id, 'option index', idx, raw);
+                  return <span className="font-medium">{display}</span>;
+                })()}
               </button>
             );
           })}

@@ -5,26 +5,8 @@ import QuizScreen from './components/QuizScreen';
 import ResultScreen from './components/ResultScreen';
 import FlashcardScreen from './components/FlashcardScreen';
 import { AppView, Question, QuizConfig } from './types';
-import loadQuestions from './services/questionsLoader';
+import { QUESTIONS } from './constants';
 import { getLeaderboard, saveScore } from './services/storageService';
-// Theme handling: persist in localStorage and apply 'dark' class on documentElement
-const THEME_KEY = 'lawmaster_theme';
-const getStoredTheme = (): 'light' | 'dark' | null => {
-  try { return (localStorage.getItem(THEME_KEY) as any) || null; } catch { return null; }
-};
-const systemPrefersDark = () => {
-  try { return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches; } catch { return false; }
-};
-const applyDarkClass = (isDark: boolean) => {
-  if (isDark) document.documentElement.classList.add('dark'); else document.documentElement.classList.remove('dark');
-};
-const initTheme = (): boolean => {
-  const stored = getStoredTheme();
-  if (stored === 'dark') { applyDarkClass(true); return true; }
-  if (stored === 'light') { applyDarkClass(false); return false; }
-  const sys = systemPrefersDark(); applyDarkClass(sys); return sys;
-};
-const setStoredTheme = (isDark: boolean) => { try { localStorage.setItem(THEME_KEY, isDark ? 'dark' : 'light'); } catch {} };
 
 const App: React.FC = () => {
   const [view, setView] = useState<AppView>('welcome');
@@ -33,36 +15,26 @@ const App: React.FC = () => {
   const [score, setScore] = useState(0);
   const [userAnswers, setUserAnswers] = useState<(number | null)[]>([]);
   const [activeQuestions, setActiveQuestions] = useState<Question[]>([]);
-  const [allQuestions, setAllQuestions] = useState<Question[]>([]);
 
   useEffect(() => {
-    const isDark = initTheme();
-    setDarkMode(isDark);
+    // Check system preference
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      setDarkMode(true);
+    }
   }, []);
 
   useEffect(() => {
-    applyDarkClass(darkMode);
-    setStoredTheme(darkMode);
+    if (darkMode) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
   }, [darkMode]);
-
-  useEffect(() => {
-    let mounted = true;
-    loadQuestions().then(qs => { if (mounted) setAllQuestions(qs); });
-    return () => { mounted = false; };
-  }, []);
 
   const handleStartQuiz = (name: string, config: QuizConfig) => {
     setUserName(name);
     
-    let filteredQuestions = allQuestions.length ? [...allQuestions] : [];
-
-    // if not yet loaded, show fallback from constants by importing dynamically
-    if (filteredQuestions.length === 0) {
-      // lazy require to avoid circular import at module level
-      // eslint-disable-next-line @typescript-eslint/no-var-requires
-      const { QUESTIONS: FALLBACK } = require('./constants');
-      filteredQuestions = [...FALLBACK];
-    }
+    let filteredQuestions = [...QUESTIONS];
 
     // Filter by category if mode is topic
     if (config.mode === 'topic' && config.selectedCategory) {
@@ -87,8 +59,7 @@ const App: React.FC = () => {
   const handleStartFlashcard = (name: string) => {
     setUserName(name);
     // Shuffle for flashcards too
-    const source = allQuestions.length ? allQuestions : require('./constants').QUESTIONS;
-    const shuffled = [...source].sort(() => 0.5 - Math.random());
+    const shuffled = [...QUESTIONS].sort(() => 0.5 - Math.random());
     setActiveQuestions(shuffled); 
     setView('flashcard');
   };
@@ -150,8 +121,8 @@ const App: React.FC = () => {
       </main>
       
       <footer className="py-6 text-center text-gray-500 dark:text-gray-400 text-sm">
-        © {new Date().getFullYear()} LawMaster. Xây dựng cho sinh viên Luật. 
-        <p>by: Nguyễn Quang Tú.</p>
+        © {new Date().getFullYear()} LawMaster. Xây dựng cho sinh viên Luật.
+        <div><p>By : Nguyễn Quang Tú </p></div>
       </footer>
     </div>
   );

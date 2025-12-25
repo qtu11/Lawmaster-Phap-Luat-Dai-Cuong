@@ -1,6 +1,6 @@
 import React from 'react';
 import { Scale, Moon, Sun } from 'lucide-react';
-import { APPLICATION_NAME } from '../constants';
+import { APP_NAME } from '../constants';
 
 interface HeaderProps {
   darkMode: boolean;
@@ -20,28 +20,17 @@ const Header: React.FC<HeaderProps> = ({ darkMode, toggleDarkMode, goHome }) => 
             <Scale size={24} strokeWidth={2.5} />
           </div>
           <h1 className="text-xl md:text-2xl font-serif font-bold tracking-wide text-gold-400">
-            {APPLICATION_NAME}
+            {APP_NAME}
           </h1>
         </div>
-            <div className="flex items-center gap-2">
-              <button
-                onClick={toggleDarkMode}
-                className="p-2 rounded-full hover:bg-navy-800 text-gold-400 transition-colors"
-                aria-label="Toggle Dark Mode"
-                title="Chuyển giao diện sáng/tối"
-              >
-                {darkMode ? <Sun size={20} /> : <Moon size={20} />}
-              </button>
 
-              <button
-                onClick={goHome}
-                className="p-2 rounded-md bg-red-600 hover:bg-red-700 text-white transition-colors flex items-center gap-2"
-                aria-label="Thoát về màn hình chính"
-                title="Thoát"
-              >
-                Thoát
-              </button>
-            </div>
+        <button
+          onClick={toggleDarkMode}
+          className="p-2 rounded-full hover:bg-navy-800 text-gold-400 transition-colors"
+          aria-label="Toggle Dark Mode"
+        >
+          {darkMode ? <Sun size={20} /> : <Moon size={20} />}
+        </button>
       </div>
     </header>
   );
