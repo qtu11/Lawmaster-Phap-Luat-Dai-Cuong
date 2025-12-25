@@ -79,18 +79,26 @@ const QuizScreen: React.FC<QuizScreenProps> = ({ questions, onFinish }) => {
 
   const handleSpeak = () => {
     // Format text tự nhiên hơn cho tiếng Việt
-    const questionText = currentQuestion.question.trim();
+    let questionText = currentQuestion.question.trim();
+    
+    // Loại bỏ dấu chấm cuối câu hỏi nếu có (sẽ thêm lại sau)
+    questionText = questionText.replace(/[.!?]+$/, '').trim();
     
     // Format options một cách tự nhiên
     const optionsText = currentQuestion.options
       .map((option, idx) => {
-        const cleanOption = option.replace(/^[A-D]\.\s*/, '').trim();
+        // Loại bỏ prefix A. B. C. D. nếu có
+        let cleanOption = option.replace(/^[A-DĐ]\.\s*/, '').trim();
+        // Loại bỏ dấu chấm cuối nếu có
+        cleanOption = cleanOption.replace(/\.$/, '').trim();
+        
         const optionLabel = String.fromCharCode(65 + idx); // A, B, C, D
-        return `Phương án ${optionLabel}: ${cleanOption}`;
+        return `Phương án ${optionLabel}, ${cleanOption}`;
       })
       .join('. ');
     
-    const text = `${questionText}. ${optionsText}`;
+    // Format tự nhiên: Câu hỏi, rồi các phương án
+    const text = `${questionText}. Các phương án trả lời: ${optionsText}.`;
     stopSpeaking();
     speakText(text);
   };
