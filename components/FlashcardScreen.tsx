@@ -25,7 +25,30 @@ const FlashcardScreen: React.FC<FlashcardScreenProps> = ({ questions, onExit }) 
     }, 300);
   };
 
+  // Safety check
+  if (!questions || questions.length === 0) {
+    return (
+      <div className="min-h-[calc(100vh-80px)] flex flex-col items-center justify-center p-4">
+        <p className="text-gray-500 dark:text-gray-400">Không có câu hỏi nào.</p>
+        <button onClick={onExit} className="mt-4 px-4 py-2 bg-navy-900 text-white rounded-lg">
+          Quay lại
+        </button>
+      </div>
+    );
+  }
+
   const currentQ = questions[currentIdx];
+  if (!currentQ) {
+    return (
+      <div className="min-h-[calc(100vh-80px)] flex flex-col items-center justify-center p-4">
+        <p className="text-gray-500 dark:text-gray-400">Lỗi tải câu hỏi.</p>
+        <button onClick={onExit} className="mt-4 px-4 py-2 bg-navy-900 text-white rounded-lg">
+          Quay lại
+        </button>
+      </div>
+    );
+  }
+
   const explanationText = currentQ.explanation || `Đáp án đúng là: ${currentQ.options[currentQ.correctAnswer]}`;
 
   return (
@@ -55,7 +78,7 @@ const FlashcardScreen: React.FC<FlashcardScreenProps> = ({ questions, onExit }) 
             </div>
 
             {/* Back */}
-            <div className="flip-card-back bg-navy-900 dark:bg-navy-950 rounded-3xl p-8 flex flex-col justify-center items-center text-white rotate-y-180">
+            <div className="flip-card-back bg-navy-900 dark:bg-navy-950 rounded-3xl p-8 flex flex-col justify-center items-center text-white">
                <span className="text-gold-400 font-bold tracking-widest uppercase mb-4 text-sm">Đáp án</span>
                <p className="text-xl font-bold text-center mb-6">
                  {currentQ.options[currentQ.correctAnswer]}

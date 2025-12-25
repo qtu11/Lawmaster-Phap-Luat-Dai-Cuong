@@ -1,48 +1,27 @@
-import path from 'path';
-import { defineConfig, loadEnv } from 'vite';
+import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
-export default defineConfig(({ mode }) => {
-    const env = loadEnv(mode, '.', '');
-    return {
-      server: {
-        port: 3000,
-        host: '0.0.0.0',
-      },
-      plugins: [
-        react({
-          jsxRuntime: 'automatic',
-        })
-      ],
-      define: {
-        'process.env.API_KEY': JSON.stringify(env.GEMINI_API_KEY),
-        'process.env.GEMINI_API_KEY': JSON.stringify(env.GEMINI_API_KEY)
-      },
-      resolve: {
-        alias: {
-          '@': path.resolve(__dirname, '.'),
-        }
-      },
-      build: {
-        chunkSizeWarningLimit: 700,
-        rollupOptions: {
-          output: {
-            manualChunks(id) {
-              if (id.includes('node_modules')) {
-                // Tách react và react-dom riêng để tránh conflict
-                if (id.includes('react-dom')) return 'vendor_react-dom';
-                if (id.includes('react/') || id.includes('react\\')) return 'vendor_react';
-                if (id.includes('lucide-react')) return 'vendor_icons';
-                if (id.includes('recharts')) return 'vendor_charts';
-                return 'vendor_misc';
-              }
-            }
-          }
-        },
-        commonjsOptions: {
-          include: [/node_modules/],
-          transformMixedEsModules: true
+// https://vite.dev/config/
+export default defineConfig({
+  plugins: [react()],
+  server: {
+    port: 3000,
+    open: true
+  },
+  build: {
+    outDir: 'dist',
+    sourcemap: false,
+    minify: 'esbuild',
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'react-vendor': ['react', 'react-dom'],
+          'chart-vendor': ['recharts'],
+          'icon-vendor': ['lucide-react']
         }
       }
-    };
+    },
+    chunkSizeWarningLimit: 1000
+  }
 });
+

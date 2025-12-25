@@ -15,7 +15,24 @@ const QuizScreen: React.FC<QuizScreenProps> = ({ questions, onFinish }) => {
   const [showExplanation, setShowExplanation] = useState(false);
   const [timeLeft, setTimeLeft] = useState(QUIZ_DURATION_SECONDS);
 
+  // Safety check
+  if (!questions || questions.length === 0) {
+    return (
+      <div className="max-w-4xl mx-auto p-6 text-center">
+        <p className="text-gray-500 dark:text-gray-400">Không có câu hỏi nào.</p>
+      </div>
+    );
+  }
+
   const currentQuestion = questions[currentIdx];
+  if (!currentQuestion) {
+    return (
+      <div className="max-w-4xl mx-auto p-6 text-center">
+        <p className="text-gray-500 dark:text-gray-400">Lỗi tải câu hỏi.</p>
+      </div>
+    );
+  }
+
   const isAnswered = answers[currentIdx] !== null;
 
   useEffect(() => {

@@ -1,27 +1,31 @@
 {
-  "name": "lawmaster---pháp-luật-đại-cương",
-  "private": true,
-  "version": "0.0.0",
+  "name": "lawmaster-phap-luat-dai-cuong",
+  "version": "1.0.0",
+  "description": "Hệ thống ôn thi Pháp Luật Đại Cương với 300 câu hỏi trắc nghiệm",
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
   },
   "dependencies": {
-    "lucide-react": "^0.562.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "recharts": "^3.6.0"
+    "lucide-react": "^0.469.0",
+    "recharts": "^2.15.0"
   },
   "devDependencies": {
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@types/node": "^22.10.2",
+    "@vitejs/plugin-react": "^4.3.4",
+    "typescript": "^5.7.2",
+    "vite": "^6.4.1",
     "@tailwindcss/postcss": "^4.1.18",
-    "@types/node": "^22.14.0",
-    "@vitejs/plugin-react": "^5.0.0",
-    "autoprefixer": "^10.4.23",
-    "postcss": "^8.5.6",
-    "tailwindcss": "^4.1.18",
-    "typescript": "~5.8.2",
-    "vite": "^6.2.0"
-  }
+    "autoprefixer": "^10.4.20"
+  },
+  "author": "qtusdev",
+  "license": "MIT"
 }
+
